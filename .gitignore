@@ -4,3 +4,4 @@
 *.docx
 */.idea/
 */__pycache__/
+*test*
