@@ -1,0 +1,6 @@
+*.zip
+*.rar
+*.doc
+*.docx
+*/.idea/
+*/__pycache__/
