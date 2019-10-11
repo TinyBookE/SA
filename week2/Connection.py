@@ -3,7 +3,6 @@ import json
 from multiprocessing import Process
 import re
 
-
 class Connect:
     def __init__(self, addr, recv_queue, send_queue):
         self.addr = addr

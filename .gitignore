@@ -2,6 +2,9 @@
 *.rar
 *.doc
 *.docx
+*.pdf
+*/img/
 */.idea/
 */__pycache__/
 *test*
+./*Temp/
