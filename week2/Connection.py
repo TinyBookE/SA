@@ -15,10 +15,9 @@ class Connect:
             self.socket.connect(self.addr)
         except Exception as e:
             print(e)
-            self.recv_queue.put('connect failed\n')
+            self.recv_queue.put('connect unsuccessfully\n')
             return False
-        self.recv_queue.put('connect succeed\n')
-        print('succeed')
+        self.recv_queue.put('connect successfully\n')
         return True
 
     def start(self):
@@ -33,6 +32,7 @@ class Connect:
                 data = json.loads(data)
                 print(data)
                 if data['code'] == 1:
+                    self.recv_queue.put('----------\n')
                     self.recv_queue.put(data['msg']+'\n')
                 else:
                     result = data['result']
@@ -40,7 +40,7 @@ class Connect:
                         msg = '----------\n' + date + ':\n'
                         for field, value in res.items():
                             msg += field + ': ' + str(value) + '\n'
-                            self.recv_queue.put(msg)
+                        self.recv_queue.put(msg)
 
         except socket.error:
             self.recv_queue.put('socket close.')
@@ -60,7 +60,13 @@ class Connect:
                 while True:
                     msg = self.send_queue.get()
                     date = re.findall(r'(\d{4}[/-]\d{1,2}[/-]\d{1,2})', msg['date'])
+                    if len(date) == 0:
+                        self.recv_queue.put('The date format should be "xxxx-x-x"')
+                        continue
                     field = re.split(r'[\s:;]+', msg['field'])[:-1]
+                    if len(field) == 0:
+                        self.recv_queue.put('Have no valid field')
+                        continue
                     msg = {'date': date, 'field': field}
                     msg = json.dumps(msg)
                     print(msg)

@@ -39,7 +39,7 @@ class DBServer:
                 result = json.dumps(result)
                 conn.sendall(result.encode('UTF-8'))
             except TypeError:
-                result = {'code':1, 'msg':'not exist'}
+                result = {'code':1, 'msg':'not exist recode'}
                 result = json.dumps(result).encode('UTF-8')
                 conn.sendall(result)
 
