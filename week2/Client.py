@@ -2,8 +2,7 @@ import tkinter as tk
 from threading import Thread
 
 class Client:
-    def __init__(self, addr, recv_queue, send_queue):
-        self.addr = addr
+    def __init__(self, recv_queue, send_queue):
         self.recv_queue = recv_queue
         self.send_queue = send_queue
         self._initial()

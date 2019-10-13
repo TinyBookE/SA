@@ -1,14 +1,28 @@
 import Connection
 from Client import Client
-
+import sys
+import getopt
 from multiprocessing import Queue
 
 if __name__ == '__main__':
+    ip = 'localhost'
+    port = 23333
+
+    try:
+        options, args = getopt.getopt(sys.argv[1:], "i:p:", ['ip=', 'port='])
+        for n, v in options:
+            if n in ('-i', '--ip'):
+                ip = v
+            elif n in ('-p', '--port'):
+                port = v
+    except:
+        options = None
+
     send = Queue()
     recv = Queue()
-    conn = Connection.Connect(('localhost', 23333), recv, send)
+    conn = Connection.Connect((ip, port), recv, send)
     if not conn.conn():
         exit(1)
     conn.start()
-    client = Client(('localhost', 23333), recv, send)
+    client = Client(recv, send)
     conn.close()
