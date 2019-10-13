@@ -4,6 +4,7 @@ from multiprocessing.pool import Pool
 import json
 import sys
 import getopt
+from pymysql.err import InternalError
 
 
 class DBServer:
@@ -17,6 +18,34 @@ class DBServer:
         self.table = tablename
         self.pool = Pool(processes=4)
 
+    def search(self,cursor, msg):
+        try:
+            result = {'code': 0, 'result': {}}
+            dateall = msg['date']
+            field = msg['field']
+            for date in dateall:
+                result['result'][date] = {}
+                sql = self.get_sql(date, field)
+                cursor.execute(sql)
+                record = cursor.fetchone()
+                for i in range(len(field)):
+                    result['result'][date][field[i]] = record[i]
+
+            result = json.dumps(result).encode('UTF-8')
+
+        except TypeError:
+            result = {'code': 1, 'msg': 'not exist recode'}
+            result = json.dumps(result).encode('UTF-8')
+        except InternalError:
+            result = {'code': 1, 'msg': 'receive invalid field'}
+            result = json.dumps(result).encode('UTF-8')
+        except Exception as e:
+            print(type(e))
+            print(e)
+            result = {'code': 1, 'msg': 'some error occur'}
+            result = json.dumps(result).encode('UTF-8')
+        return result
+
     def connect(self, conn):
         cursor, db = self.new_cursor()
 
@@ -24,28 +53,10 @@ class DBServer:
             try:
                 msg = conn.recv(1024)
                 msg = json.loads(msg.decode())
-
-                result = {'code': 0, 'result': {}}
-                dateall = msg['date']
-                field = msg['field']
-                for date in dateall:
-                    result['result'][date] = {}
-                    sql = self.get_sql(date, field)
-                    cursor.execute(sql)
-                    record = cursor.fetchone()
-                    for i in range(len(field)):
-                        result['result'][date][field[i]] = record[i]
-
-                result = json.dumps(result)
-                conn.sendall(result.encode('UTF-8'))
-            except TypeError:
-                result = {'code':1, 'msg':'not exist recode'}
-                result = json.dumps(result).encode('UTF-8')
-                conn.sendall(result)
+                reply = self.search(cursor, msg)
+                conn.sendall(reply)
 
             except Exception as e:
-                print(e)
-                print(type(e))
                 cursor.close()
                 db.close()
                 return
