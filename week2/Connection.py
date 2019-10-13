@@ -59,12 +59,14 @@ class Connect:
 
                 while True:
                     msg = self.send_queue.get()
-                    date = re.findall(r'(\d{4}[/-]\d{1,2}[/-]\d{1,2})', msg['date'])
+                    date = re.findall(r'(\d{4}-\d{1,2}-\d{1,2})', msg['date'])
                     if len(date) == 0:
+                        self.recv_queue.put('----------\n')
                         self.recv_queue.put('The date format should be "xxxx-x-x"')
                         continue
                     field = re.split(r'[\s:;]+', msg['field'])[:-1]
                     if len(field) == 0:
+                        self.recv_queue.put('----------\n')
                         self.recv_queue.put('Have no valid field')
                         continue
                     msg = {'date': date, 'field': field}
