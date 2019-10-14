@@ -63,7 +63,7 @@ class DBServer:
 
     def listen(self):
         self.socket = socket.socket()
-        self.socket.bind(('localhost', 23333))
+        self.socket.bind((self.host, self.port))
         self.socket.listen(10)
 
         while True:
@@ -74,7 +74,7 @@ class DBServer:
 
     def new_cursor(self):
         try:
-            db = pymysql.connect(host=self.host, port=self.port, db=self.dbname,
+            db = pymysql.connect(host='localhost', port=3304, db=self.dbname,
                                  user=self.user, passwd=self.passwd, charset=self.charset)
             cursor = db.cursor()
             return cursor, db
@@ -107,7 +107,7 @@ class DBServer:
 
 if __name__ == '__main__':
     host = 'localhost'
-    port = 3306
+    port = 23333
     user = 'user'
     passwd = 'passwd'
     dbname = 'SA_2'
@@ -123,7 +123,7 @@ if __name__ == '__main__':
         elif n in ('-p', '--passwd'):
             passwd = v
         elif n in ('-P', '--port'):
-            port = v
+            port = int(v)
         elif n in ('-H', '--host'):
             host = v
     print('Server start!')
