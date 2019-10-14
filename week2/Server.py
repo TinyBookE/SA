@@ -74,12 +74,13 @@ class DBServer:
 
     def new_cursor(self):
         try:
-            db = pymysql.connect(host='localhost', port=3304, db=self.dbname,
+            db = pymysql.connect(host='127.0.0.1', port=3306, db=self.dbname,
                                  user=self.user, passwd=self.passwd, charset=self.charset)
             cursor = db.cursor()
             return cursor, db
         except Exception as e:
             print('db falied')
+            print(e)
             exit(1)
 
     def get_sql(self, date, args):
