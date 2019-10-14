@@ -6,5 +6,6 @@
 */img/
 */.idea/
 */__pycache__/
-*test*
+./test*
 ./*Temp/
+*.sh
