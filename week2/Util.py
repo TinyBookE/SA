@@ -53,4 +53,6 @@ def test(user, passwd, host, port, dbname, tablename):
     cursor.execute(sql)
     db.commit()
 
-test('root', 'qwe59578', 'localhost', 3306, 'SA_2', 'data')
+#test('root', 'qwe59578', 'localhost', 3306, 'SA_2', 'data')
+#pandas.read_csv('data.CSV', encoding='ISO-8859-1')
+init_table('root', 'qwe59578', 'localhost', 3306, 'SA_2', 'data')
