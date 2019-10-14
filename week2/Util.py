@@ -7,7 +7,7 @@ def init_table(user, passwd, host, port, dbname, tablename):
     cursor = db.cursor()
     createSql = '''create table {}(
                     日期 varchar(50),
-                    前开盘价 varchar(50),
+                    前收盘价 varchar(50),
                     开盘价 varchar(50),
                     最高价 varchar(50),
                     最低价 varchar(50),
