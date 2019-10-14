@@ -79,7 +79,8 @@ class DBServer:
             cursor = db.cursor()
             return cursor, db
         except Exception as e:
-            raise e
+            print('db falied')
+            exit(1)
 
     def get_sql(self, date, args):
         field = ''
