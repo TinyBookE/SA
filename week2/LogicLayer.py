@@ -3,7 +3,7 @@ import json
 from multiprocessing import Process
 import re
 
-class Connect:
+class Logic:
     def __init__(self, addr, recv_queue, send_queue):
         self.addr = addr
         self.recv_queue = recv_queue

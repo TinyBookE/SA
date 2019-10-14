@@ -110,8 +110,8 @@ if __name__ == '__main__':
     port = 3306
     user = 'user'
     passwd = 'passwd'
-    dbname = 'test'
-    tablename = 't'
+    dbname = 'SA_2'
+    tablename = 'data'
     try:
         options, args = getopt.getopt(sys.argv[1:], "u:P:p:", ['user=', 'port=','passwd='])
     except:
