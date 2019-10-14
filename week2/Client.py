@@ -14,9 +14,10 @@ if __name__ == '__main__':
             if n in ('-i', '--ip'):
                 ip = v
             elif n in ('-p', '--port'):
-                port = v
+                port = int(v)
     except:
         options = None
+
 
     send = Queue()
     recv = Queue()

@@ -113,17 +113,19 @@ if __name__ == '__main__':
     dbname = 'SA_2'
     tablename = 'data'
     try:
-        options, args = getopt.getopt(sys.argv[1:], "u:P:p:", ['user=', 'port=','passwd='])
+        options, args = getopt.getopt(sys.argv[1:], "u:p:P:H:", ['user=', 'port=','passwd=', 'host='])
     except:
         options = None
         exit(1)
     for n, v in options:
         if n in ('-u', '--user'):
             user = v
-        elif n in ('-P', '--port'):
-            port = v
         elif n in ('-p', '--passwd'):
             passwd = v
+        elif n in ('-P', '--port'):
+            port = v
+        elif n in ('-H', '--host'):
+            host = v
     print('Server start!')
 
     server = DBServer(user, passwd, host, port, dbname, tablename)

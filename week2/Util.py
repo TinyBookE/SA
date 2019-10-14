@@ -52,7 +52,3 @@ def test(user, passwd, host, port, dbname, tablename):
     sql = 'select {} from {} where 日期 = {}'.format(field, table, date)
     cursor.execute(sql)
     db.commit()
-
-#test('root', 'qwe59578', 'localhost', 3306, 'SA_2', 'data')
-#pandas.read_csv('data.CSV', encoding='ISO-8859-1')
-init_table('root', 'qwe59578', 'localhost', 3306, 'SA_2', 'data')
