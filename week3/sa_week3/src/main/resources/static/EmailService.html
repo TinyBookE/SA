@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js">
+    </script>
+    <title>邮件发送服务</title>
+    <script>
+        $(document).ready(function() {
+            $("#validate").click(function() {
+                $.ajax({
+                    url: "api/rest/validateEmail",
+                    type: "POST",
+                    async: false,
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        url: $("#email").val()
+                    }),
+                    success: function(response) {
+                        if (response.msg == "Y") {
+                            $("#validateResult").html("Y");
+                        } else {
+                            $("#validateResult").html("N");
+                        }
+                    },
+                    error: function(response) {
+                        console.log(response)
+                        $("#validateResult").html("请求失败");
+                    }
+                })
+            });
+        });
+
+        $(document).ready(function() {
+            $("#sendEmail").click(function(){
+                $.ajax({
+                    url: "api/rest/sendEmailBatch",
+                    type: "POST",
+                    async: false,
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        url: getEmail(),
+                        payload: $("#payload").val()
+                    }),
+                    success: function(response){
+                        console.log(response);
+                        if(response.msg == "Y"){
+                            $("#sendResult").html("Y");
+                        }else{
+                            $("#sendResult").html("N");
+                        }
+                    },
+                    error: function(response){
+                        console.log(response);
+                        $("#sendResult").html("请求失败");
+                    }
+                })
+            })
+        })
+
+        function getEmail(){
+            var rawEmail = $("#email").val();
+            rawEmail=rawEmail.replace(/\s+/g, "");
+            var res = rawEmail.split(";");
+            return res;
+        }
+    </script>
+</head>
+
+
+
+<p>
+    <div>
+        <h1>Email:
+            <button id="validate" style="margin-left: 100px;height: 30px;">validate</button>
+            <label id="validateResult"></label>
+        </h1>
+        <textarea id="email" style="width: 300px;height: 100px;"></textarea>
+        <h1>PayLoad:
+            <button id="sendEmail" style="margin-left: 80px;height: 30px;">Send</button>
+            <label id="sendResult"></label>
+        </h1>
+        <textarea id="payload" style="width: 300px;height: 600px;"></textarea>
+    </div>
+</p>
+
+</html>
